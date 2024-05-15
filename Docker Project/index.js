@@ -1,27 +1,19 @@
-const express = require("express");
-const redis = require("redis");
- 
-const app = express();
-const client = redis.createClient({
-  host: "redis_db",
-  port: 6379
+const keys = require('./keys');
+const redis = require('redis');
+
+const redisClient = redis.createClient({
+  host: keys.redisHost,
+  port: keys.redisPort,
+  retry_strategy: () => 1000
 });
- 
-client.get("visits", (err, visits) => {
-  if (visits === null) {
-    client.set("visits", 0);
-  } else {
-    client.set("visits", parseInt(visits));
-  }
+const sub = redisClient.duplicate();
+
+function fib(index) {
+  if (index < 2) return 1;
+  return fib(index - 1) + fib(index - 2);
+}
+
+sub.on('message', (channel, message) => {
+  redisClient.hset('values', message, fib(parseInt(message)));
 });
- 
-app.get("/", (req, res) => {
-  client.get("visits", (err, visits) => {
-    res.send("Number of visits is " + visits);
-    client.set("visits", parseInt(visits) + 1);
-  });
-});
- 
-app.listen(8081, () => {
-  console.log("Listening on port 8081");
-});
+sub.subscribe('insert');
