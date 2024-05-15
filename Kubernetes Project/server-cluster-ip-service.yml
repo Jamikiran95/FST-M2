@@ -4,7 +4,7 @@ metadata:
   name: server-cluster-ip-service
 spec:
   selector:
-    app: myapp
+    component: api
   ports:
-  - port: 5000
-    targetPort: 5000
+  - port: 3000
+    targetPort: 3000

@@ -14,26 +14,22 @@ spec:
     spec:
       containers:
         - name: server
-          image: charumathyp/complex_api
+          image: charumathyp/api1
           ports:
-            - containerPort: 5000
+            - containerPort: 3000
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m" 
           env:
-            - name: REDIS_HOST
-              value: redis-cluster-ip-service
-            - name: REDIS_PORT
-              value: '6379'
-            - name: PGUSER
+            - name: POSTGRES_USERNAME
               value: postgres
-            - name: PGHOST
+            - name: POSTGRES_HOST
               value: postgres-cluster-ip-service
-            - name: PGPORT
+            - name: POSTGRES_PORT
               value: '5432'
-            - name: PGDATABASE
-              value: postgres
+            - name: POSTGRES_DB
+              value: simple_blog_api
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
