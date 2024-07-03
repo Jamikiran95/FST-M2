@@ -1,10 +1,20 @@
-df = spark.read.option("multiline", "true").json("C:\Users\003YAB744\Desktop\Vishnupriya\Full Stack Tester\Module 2\BigData\jsonInput.json")
-# Read the JSON file
-df = spark.read.json("input.json")
+from pyspark.sql import SparkSession
 
-# Perform transformations
-filtered_df = df.filter(df["id"] == "ABC")
+# Initialize Spark session
+spark = SparkSession.builder \
+    .appName("Spark JSON File Example") \
+    .getOrCreate()
 
-# Write the transformed data to a new JSON file
-filtered_df.write.json("output.json")
+# Read JSON files into DataFrame
+json_df = spark.read.json('C:\Users\Downloads\Notebookspark.json"', multiLine=True, inferSchema=True)
 
+# Perform computations
+json_df.printSchema()
+row_count = json_df.count()
+print(f"Total rows in JSON files: {row_count}")
+
+# Show some rows from the DataFrame
+json_df.show(5, truncate=False)
+
+# Stop Spark session
+spark.stop()
