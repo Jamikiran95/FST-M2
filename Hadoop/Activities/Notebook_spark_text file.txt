@@ -1,14 +1,20 @@
-pip install pyspark
 from pyspark.sql import SparkSession
-spark = SparkSession.builder.appName("YourAppName").getOrCreate()
-df = spark.read.text("path_to_your_text_file.txt")
 
-from pyspark.sql.types import StructType, StructField, IntegerType
+# Initialize Spark session
+spark = SparkSession.builder \
+    .appName("Spark Text File Example") \
+    .getOrCreate()
 
-schema = StructType([
-    StructField('column1', IntegerType(), True),
-    StructField('column2', IntegerType(), True),
-    StructField('column3', IntegerType(), True)
-])
+# Read text files into DataFrame
+text_df = spark.read.text('C:\Users\Downloads\Notebookfile.txt')
 
-df_with_schema = spark.read.schema(schema).text("path_to_your_text_file.txt")
+# Perform computations
+line_count = text_df.count()
+print(f"Total lines in text files: {line_count}")
+
+# Show some lines from the DataFrame
+text_df.show(5, truncate=False)
+
+# Stop Spark session
+spark.stop()
+ 
