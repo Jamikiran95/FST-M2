@@ -1,6 +1,20 @@
 from pyspark.sql import SparkSession
-spark = SparkSession.builder.appName("YourAppName").getOrCreate()
-df = spark.read.csv("C:\Users\003YAB744\Desktop\Vishnupriya\Full Stack Tester\Module 2\dataFile1.csv", header=True, inferSchema=True)
-processed_df = df.select("column1", "column2").filter(df["column1"] > 0)
 
-processed_df.write.csv("C:\Users\003YAB744\Desktop\Vishnupriya\Full Stack Tester\Module 2\outputFile.csv")
+# Initialize Spark session
+spark = SparkSession.builder \
+    .appName("Spark CSV File Example") \
+    .getOrCreate()
+
+# Read CSV files into DataFrame
+csv_df = spark.read.csv('C:\Users\Downloads\Notetextfile.csv', header=True, inferSchema=True)
+
+# Perform computations
+csv_df.printSchema()
+row_count = csv_df.count()
+print(f"Total rows in CSV files: {row_count}")
+
+# Show some rows from the DataFrame
+csv_df.show(5, truncate=False)
+
+# Stop Spark session
+spark.stop()
